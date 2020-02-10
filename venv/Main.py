@@ -3,14 +3,18 @@ import Variable as variable
 import Script as script
 import NodeBase as nodebase
 import NodeGroup as nodegroup
-
+import IfNode as ifnode
+import ForNode as fornode
+import AssignNode as assnode
 if __name__ == '__main__':
     variable_list = variablelist.VariableList()
     ui_variable = [
         ["url","","google.com"],
         ["url2","","facebook.com"],
         ["xpath","","//*[@id=\"identifierId\"]"],
-        ["gmail","","wingchaos2012@gmail.com"]
+        ["gmail","","wingchaos2012@gmail.com"],
+        ["counter","","1"],
+        ["message","","Hello world"]
     ]
     ui_action = [
         []
@@ -21,31 +25,22 @@ if __name__ == '__main__':
     #print(variable_list.get_init_value("xpath"))
     #variable_list.get_cur_value("url")
     objScript = script.Script()
+    objAssignNode = assnode.AssignNode("counter","8")
     objNodeGroup = nodegroup.NodeGroup("group1")
     objNodeGroup2 = nodegroup.NodeGroup("group2")
-    objectNodeBase1 = nodebase.NodeBase("nodebase1","test_func1")
-    objectNodeBase2 = nodebase.NodeBase("nodebase2","test_func2")
-    objectNodeBase3 = nodebase.NodeBase("nodebase2", "test_func1")
-    objectNodeBase4 = nodebase.NodeBase("nodebase2", "test_func2")
-    objectNodeBase5 = nodebase.NodeBase("nodebase2", "test_func1")
 
-    objNodeGroup.__additem__(objectNodeBase1)
-    objNodeGroup.__additem__(objectNodeBase2)
-    objNodeGroup.__additem__(objectNodeBase5)
-    objNodeGroup.__additem__(objectNodeBase3)
-    objNodeGroup.__additem__(objectNodeBase4)
-    objScript.__additem__(objNodeGroup)
-    # objScript.__additem__(objectNodeBase1)
-    # objScript.__additem__(objNodeGroup2)
-    # objScript.__additem__(objectNodeBase2)
-    # objScript.__additem__(objNodeGroup)
-    # objScript.__additem__(objectNodeBase2)
-    # objScript.__additem__(objectNodeBase2)
-    # objScript.__additem__(objectNodeBase2)
-    # objScript.__additem__(objectNodeBase2)
-    # objScript.__additem__(objectNodeBase2)
-    # objScript.__additem__(objectNodeBase2)
-
+    objNodeBase = nodebase.NodeBase("nodebase1","test_func1")
+    objNodeBase2 = nodebase.NodeBase("nodebase2","count_up")
+    # objNodeBase2 = nodebase.NodeBase("nodebase1", "test_func2")
+    objNodeGroup.__additem__(objNodeBase)
+    objNodeGroup.__additem__(objNodeBase2)
+    # objNodeGroup2.__additem__(objNodeBase2)
+    # objNodeGroup2.__additem__(objNodeBase)
+    #objIfNode = ifnode.IfNode("1+1>1",objNodeGroup,objNodeGroup2)
+    objForNode = fornode.ForNode(variable_list.get_init_value("counter"),"4","1",objNodeGroup)
+    #print objIfNode.test_expresstion()
+    objScript.__additem__(objAssignNode)
+    objScript.__additem__(objForNode)
     objScript.__run__()
     #print()
 

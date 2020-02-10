@@ -1,4 +1,7 @@
 import VariableList as variablelist
 import Variable as variable
 variable_list = variablelist.VariableList()
-print(variable_list.__getattribute__("type"))
+
+
+greetdy = variable_list.get_init_value("message")
+variable_list.get_item("message").set_cur_value("Hi World")

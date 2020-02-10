@@ -1,1 +1,1 @@
-print("hello func2")
+print 'test_func2'
