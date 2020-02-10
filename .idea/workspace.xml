@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c65e5a44-8223-44e4-932e-79944a3ff4ea" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1Xb1pzHTjrFQxMwizzFJyRs8XLl" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="restartRequiresConfirmation" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ducnm\PycharmProjects\P1\venv" />
+      <recent name="C:\Users\ducnm\PycharmProjects\P1\venv\Scripts" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="P1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/Main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c65e5a44-8223-44e4-932e-79944a3ff4ea" name="Default Changelist" comment="" />
+      <created>1581300166845</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1581300166845</updated>
+      <workItem from="1581300169958" duration="20365000" />
+      <workItem from="1581340334649" duration="776000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="402" y="0" key="#Main" timestamp="1581340537313">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="402" y="0" key="#Main/0.0.1366.728@0.0.1366.728" timestamp="1581340537313" />
+    <state x="730" y="331" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1581301128922">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="730" y="331" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1581301128922" />
+    <state width="1340" height="416" key="GridCell.Tab.0.bottom" timestamp="1581331176762">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1340" height="416" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1581331176762" />
+    <state width="1340" height="416" key="GridCell.Tab.0.center" timestamp="1581331176762">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1340" height="416" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1581331176762" />
+    <state width="1340" height="416" key="GridCell.Tab.0.left" timestamp="1581331176762">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1340" height="416" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1581331176762" />
+    <state width="1340" height="416" key="GridCell.Tab.0.right" timestamp="1581331176762">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1340" height="416" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1581331176762" />
+    <state width="1340" height="416" key="GridCell.Tab.1.bottom" timestamp="1581331176762">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1340" height="416" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1581331176762" />
+    <state width="1340" height="416" key="GridCell.Tab.1.center" timestamp="1581331176762">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1340" height="416" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1581331176762" />
+    <state width="1340" height="416" key="GridCell.Tab.1.left" timestamp="1581331176762">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1340" height="416" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1581331176762" />
+    <state width="1340" height="416" key="GridCell.Tab.1.right" timestamp="1581331176762">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1340" height="416" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1581331176762" />
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1581300254379">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581300254379" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/P1$Main.coverage" NAME="Main Coverage Results" MODIFIED="1581330983768" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
+  </component>
+</project>
