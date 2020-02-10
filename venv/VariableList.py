@@ -37,7 +37,6 @@ class VariableList(object):
         var_list = []
         for i in range(self.var_list.__len__()):
             var_list.append(self.var_list.__getitem__(i))
-        print(var_list)
         var_name = [var_list[i].get_name() for i in range(var_list.__len__())]
         return self.var_list.__getitem__(var_name.index(name)).get_init_value()
 
@@ -45,7 +44,6 @@ class VariableList(object):
         var_list = []
         for i in range(self.var_list.__len__()):
             var_list.append(self.var_list.__getitem__(i))
-        print(var_list)
         var_name = [var_list[i].get_name() for i in range(var_list.__len__())]
         return self.var_list.__getitem__(var_name.index(name)).get_cur_value()
 
@@ -53,6 +51,5 @@ class VariableList(object):
         var_list = []
         for i in range(self.var_list.__len__()):
             var_list.append(self.var_list.__getitem__(i))
-        print(var_list)
         var_name = [var_list[i].get_name() for i in range(var_list.__len__())]
         return self.var_list.__getitem__(var_name.index(name))
