@@ -1,4 +1,5 @@
 import NodeGroup as node_group
+import Expresstion as exp
 class IfNode(object):
     def __init__(self,expresstion,if_group,else_group):
         self.else_group = else_group
@@ -18,7 +19,4 @@ class IfNode(object):
         self.else_group = else_group
 
     def run_node(self):
-        done_code = False
-        done_code = node_group.NodeGroup.run_node(self.if_group) if eval(self.expresstion) == True else node_group.NodeGroup.run_node(self.else_group)
-        while (done_code):
-            break
+        node_group.NodeGroup.run_node(self.if_group) if exp.Expresstion.run_node(self.expresstion) == True else node_group.NodeGroup.run_node(self.else_group)

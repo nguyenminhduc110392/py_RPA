@@ -1,4 +1,5 @@
 import NodeGroup as node_group
+import Expresstion as exp
 class WhileNode(object):
     def __init__(self,expresstion,if_group,else_group):
         self.expresstion = expresstion
@@ -6,11 +7,7 @@ class WhileNode(object):
         self.else_group = else_group
 
     def run_node(self):
-        done_code = False
-        while (eval(self.expresstion)):
-            done_code = node_group.NodeGroup.run_node(self.if_group)
+        while (exp.Expresstion.run_node(self.expresstion)):
+            node_group.NodeGroup.run_node(self.if_group)
         else:
-            done_code= node_group.NodeGroup.run_node(self.else_group)
-
-        #while (done_code):
-        #    break
+            node_group.NodeGroup.run_node(self.else_group)

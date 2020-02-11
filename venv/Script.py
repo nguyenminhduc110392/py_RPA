@@ -1,8 +1,10 @@
 import NodeBase as nb
 import NodeGroup as ng
+
 class Script(object):
-    def __init__(self,node_list=[]):
-        self.node_list = node_list
+    type = "script"
+    node_list = []
+    def __init__(self):
         pass
 
     def __getnodelist__(self):

@@ -2,10 +2,11 @@
 from FunctionExcute import run_function
 
 class NodeBase(object):
-    def __init__(self,node_name,function_name,node_type = "node_base"):
+    type = "node_base"
+    def __init__(self,node_name,function_name):
         self.name = node_name
         self.function = function_name
-        self.type = node_type
+
 
     def __getname__(self):
         return self.name
@@ -29,7 +30,4 @@ class NodeBase(object):
         return
 
     def run_node(self):
-        done_code = False
-        done_code = run_function(self.function)
-        while (done_code):
-            break
+        run_function(self.function)

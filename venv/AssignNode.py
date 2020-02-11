@@ -1,6 +1,7 @@
 import VariableList as variablelist
 import Variable as variable
 class AssignNode():
+    type = "assign_node"
     def __init__(self,name,value):
         self.name = name
         self.value = value
