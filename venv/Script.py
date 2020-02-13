@@ -19,6 +19,9 @@ class Script(object):
     def __getleng__(self):
         return self.node_list.__len__()
 
+    def __del__(self):
+        return
+
     def __run__(self):
         for i in range(self.node_list.__len__()):
             self.node_list.__getitem__(i).run_node()

@@ -1,7 +1,8 @@
 import tkinter
 from tkinter import *
 from tkinter import ttk
-
+from tkinter.filedialog import *
+from tkinter.messagebox import *
 
 import VariableList as variablelist
 import Variable as variable
@@ -18,9 +19,9 @@ import Expresstion as exp
 class MainWindow(object):
     __root = Tk()
     # default window width and height
-    __thisWidth = 450
+    __thisWidth = 540
     __thisHeight = 300
-    #__thisTextArea = Text(__root)
+    # __thisTextArea = Text(__root)
     __thisMenuBar = Menu(__root)
 
     __thisFileMenu = Menu(__thisMenuBar, tearoff=0)
@@ -28,7 +29,7 @@ class MainWindow(object):
     __thisViewMenu = Menu(__thisMenuBar, tearoff=0)
     __thisHelpMenu = Menu(__thisMenuBar, tearoff=0)
 
-    #__thisRunButton = Button(__root)
+    # __thisRunButton = Button(__root)
     __thisAddButton = Button(__root)
     __thisDeleteButton = Button(__root)
     __thisActionListBox = Listbox(__root)
@@ -36,6 +37,7 @@ class MainWindow(object):
     # To add scrollbar
     __thisLibraryTreeViewScrollBar = Scrollbar(__root)
     __thisActionListBoxScrollBar = Scrollbar(__root)
+    __thisSelectLabel = Label(__root)
     # __thisTopWinDow = Toplevel()
 
     __thisScript = script.Script()
@@ -76,7 +78,7 @@ class MainWindow(object):
         self.__root.geometry('%dx%d+%d+%d' % (self.__thisWidth,
                                               self.__thisHeight,
                                               left, top))
-        #self.__thisRunButton.pack(side=LEFT)
+        # self.__thisRunButton.pack(side=LEFT)
         # To make the textarea auto resizable
         # self.__root.grid_rowconfigure(0, weight=1)
         # self.__root.grid_columnconfigure(0, weight=1)
@@ -126,7 +128,7 @@ class MainWindow(object):
                                        menu=self.__thisRunMenu)
 
         self.__thisRunMenu.add_command(label="Excute",
-                                        command=self.__runScript)
+                                       command=self.__runScript)
 
         # To create a feature of description of the notepad
         self.__thisHelpMenu.add_command(label="About pyRPA",
@@ -139,61 +141,68 @@ class MainWindow(object):
         # self.__thisScrollBar.pack(side=RIGHT,fill=Y)
 
         # Scrollbar will adjust automatically according to the content
-        #self.__thisRunButton.config(text='Run', width=7, height=3, command=self.__runScript)
-        #self.__thisRunButton.grid(row=0, column=0)
+        # self.__thisRunButton.config(text='Run', width=7, height=3, command=self.__runScript)
+        # self.__thisRunButton.grid(row=0, column=0)
         self.__thisAddButton.config(text='Add', command=self.__addNode)
-        self.__thisAddButton.grid(row=0, column=0,rowspan=1,columnspan=1)
+        self.__thisAddButton.grid(row=0, column=0, rowspan=1, columnspan=1)
+
         self.__thisDeleteButton.config(text='Delete', command=self.__deleteNode)
-        self.__thisDeleteButton.grid(row=0, column=1,rowspan=1,columnspan=1)
+        self.__thisDeleteButton.grid(row=0, column=3, rowspan=1, columnspan=1)
 
         self.__thisActionListBox.config(yscrollcommand=self.__thisActionListBoxScrollBar.set)
         self.__thisActionListBox.grid(row=0, column=3, columnspan=2, rowspan=6)
+        self.__thisActionListBox.bind('<<ListboxSelect>>', self.onselect)
         self.__thisActionListBoxScrollBar.config(command=self.__thisActionListBox.yview)
         self.__thisActionListBoxScrollBar.grid(row=0, column=6, columnspan=1, rowspan=6)
-
+        self.__thisSelectLabel.grid(row=0, column=7)
         self.__thisLibraryTreeView.config(show="tree", yscrollcommand=self.__thisLibraryTreeViewScrollBar.set)
         self.__thisLibraryTreeView.grid(row=1, column=0, columnspan=2, rowspan=4)
         self.__thisLibraryTreeViewScrollBar.config(command=self.__thisLibraryTreeView.yview)
         self.__thisLibraryTreeViewScrollBar.grid(row=1, column=2, columnspan=1, rowspan=4)
 
+        #self.__thisConfigNodeFrame()
         self.__loadTreeView()
 
-
         # self.__thisTextArea.config(yscrollcommand=self.__thisScrollBar.set)
+    def onselect(self,evt):
+        selector = evt.widget
+        index = int(selector.curselection()[0])
+        index_value = selector.get(index)
+        self.__thisSelectLabel.config(text=index_value)
 
     def __quitApplication(self):
         self.__root.destroy()
         # exit()
 
     def __loadTreeView(self):
-        list_node = ("group","node-base","assign","if-else","multi-if","for-loop","while-loop","do-while-loop","break","continue","try-catch","subscript-call","subscript-create","return")
-        f1 = self.__thisLibraryTreeView.insert("", 0, text="Node")
+        list_node = (
+            "group", "node-base", "assign", "if-else", "multi-if", "for-loop", "while-loop", "do-while-loop", "break",
+            "continue", "try-catch", "subscript-call", "subscript-create", "return")
+        f1 = self.__thisLibraryTreeView.insert("", 0, iid="Main Node", text="Node")
         for i in list_node:
-            self.__thisLibraryTreeView.insert(f1, "end",text=i)
-        f2 = self.__thisLibraryTreeView.insert("", "end", text="Library")
+            self.__thisLibraryTreeView.insert(f1, "end", text=i)
+        f2 = self.__thisLibraryTreeView.insert("", "end", iid="Library Node", text="Library")
         self.__thisLibraryTreeView.insert(f2, "end", text="test_func1")
         self.__thisLibraryTreeView.insert(f2, "end", text="test_func2")
         self.__thisLibraryTreeView.insert(f2, "end", text="open_chrome")
         self.__thisLibraryTreeView.insert(f2, "end", text="open_gmail")
 
-
-
     def __addNode(self):
-        self.__thisActionListBox.insert(END, self.__thisLibraryTreeView.item(self.__thisLibraryTreeView.focus())['text'])
+        self.__thisActionListBox.insert(END,
+                                        self.__thisLibraryTreeView.item(self.__thisLibraryTreeView.focus())['text'])
         self.__addActionToScript(self.__thisLibraryTreeView.item(self.__thisLibraryTreeView.focus())['text'])
-        #self.__thisScript.__additem__()
+        # self.__thisScript.__additem__()
         return
 
-    def __addActionToScript(self,type):
+    def __addActionToScript(self, type):
         if type == "assign":
-            self.__thisVariableList.__adduniqueitem__(variable.Variable("driver","",""))
-            self.__thisVariableList.__adduniqueitem__(variable.Variable("url","","http://gmail.com"))
-            #self.__thisScript.__additem__(assnode.AssignNode("", ""))
-            #self.__thisScript.__additem__(assnode.AssignNode("",""))
+            self.__thisVariableList.__adduniqueitem__(variable.Variable("driver", "", ""))
+            self.__thisVariableList.__adduniqueitem__(variable.Variable("url", "", "http://gmail.com"))
+            # self.__thisScript.__additem__(assnode.AssignNode("", ""))
         elif type == "if-else":
-            self.__thisScript.__additem__(ifnode.IfNode("","",""))
+            self.__thisScript.__additem__(ifnode.IfNode("", "", ""))
         elif type == "node-base":
-            self.__thisScript.__additem__(nodebase.NodeBase("","test_func1"))
+            self.__thisScript.__additem__(nodebase.NodeBase("", "test_func1"))
         elif type == "test_func1":
             self.__thisScript.__additem__(nodebase.NodeBase("node-base1", "test_func1"))
         elif type == "test_func2":
@@ -205,11 +214,10 @@ class MainWindow(object):
 
     def __deleteNode(self):
         self.__thisActionListBox.delete(ANCHOR)
-
         return
 
     def __showAbout(self):
-        showinfo("pyRPA", "wingchaos")
+        showinfo("pyRPA", "wingchaos2012@gmail.com")
 
     def __openFile(self):
         self.__file = askopenfilename(defaultextension=".txt",
@@ -236,6 +244,15 @@ class MainWindow(object):
     def __newFile(self):
         self.__root.title("new file - pyRPA")
         self.__file = None
+        self.__thisActionListBox.delete(0,END)
+        self.__thisScript.__del__()
+
+        del self.__thisVariableList
+        print(self.__thisVariableList.__getleng__())
+        self.__thisScript = script.Script()
+        self.__thisVariableList = variablelist.VariableList()
+        self.__thisLibraryTreeView.item("Main Node", open=False)
+        self.__thisLibraryTreeView.item("Library Node", open=False)
         # self.__thisTextArea.delete(1.0,END)
 
     def __saveFile(self):
