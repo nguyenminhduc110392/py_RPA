@@ -53,3 +53,6 @@ class VariableList(object):
             var_list.append(self.var_list.__getitem__(i))
         var_name = [var_list[i].get_name() for i in range(var_list.__len__())]
         return self.var_list.__getitem__(var_name.index(name))
+
+    def __del__(self):
+        return

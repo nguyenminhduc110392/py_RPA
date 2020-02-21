@@ -4,303 +4,241 @@ from tkinter import ttk
 from tkinter.filedialog import *
 from tkinter.messagebox import *
 
-import VariableList as variablelist
-import Variable as variable
-import Script as script
-import NodeBase as nodebase
-import NodeGroup as nodegroup
-import IfNode as ifnode
-import ForNode as fornode
-import AssignNode as assnode
-import BreakNode as breaknode
-import Expresstion as exp
-
 
 class MainWindow(object):
-    __root = Tk()
-    # default window width and height
-    __thisWidth = 540
-    __thisHeight = 300
-    # __thisTextArea = Text(__root)
-    __thisMenuBar = Menu(__root)
+    rootframe = Tk()
+    width = 800
+    height = 620
+    rootframe.geometry('{}x{}'.format(width, height))
 
-    __thisFileMenu = Menu(__thisMenuBar, tearoff=0)
-    __thisRunMenu = Menu(__thisMenuBar, tearoff=0)
-    __thisViewMenu = Menu(__thisMenuBar, tearoff=0)
-    __thisHelpMenu = Menu(__thisMenuBar, tearoff=0)
+    # menu bar
+    menubar = Menu(rootframe)
+    filemenu = Menu(menubar, tearoff=0)
+    runmenu = Menu(menubar, tearoff=0)
+    viewmenu = Menu(menubar, tearoff=0)
+    helpmenu = Menu(menubar, tearoff=0)
 
-    # __thisRunButton = Button(__root)
-    __thisAddButton = Button(__root)
-    __thisDeleteButton = Button(__root)
-    __thisActionListBox = Listbox(__root)
-    __thisLibraryTreeView = ttk.Treeview(__root)
-    # To add scrollbar
-    __thisLibraryTreeViewScrollBar = Scrollbar(__root)
-    __thisActionListBoxScrollBar = Scrollbar(__root)
-    __thisSelectLabel = Label(__root)
-    # __thisTopWinDow = Toplevel()
+    # create all of the main containers
+    topframe = Frame(rootframe, bg='cyan', width=450, height=50, pady=3)
+    center = Frame(rootframe, bg='gray2', width=50, height=40, padx=3, pady=3)
+    # btmframe = Frame(rootframe, bg='white', width=450, height=45, pady=3)
+    # btmframe2 = Frame(rootframe, bg='lavender', width=450, height=60, pady=3)
 
-    __thisScript = script.Script()
-    __thisVariableList = variablelist.VariableList()
-    __file = None
+    # layout all of the main containers
+    rootframe.grid_rowconfigure(1, weight=1)
+    rootframe.grid_columnconfigure(0, weight=1)
+
+    topframe.grid(row=0, sticky="ew")
+    center.grid(row=1, sticky="nsew")
+    # btmframe.grid(row=3, sticky="ew")
+    # btmframe2.grid(row=4, sticky="ew")
+
+    # create the widgets for the top frame
+    # model_label = Label(topframe, text='Model Dimensions')
+    # width_label = Label(topframe, text='Width:')
+    # length_label = Label(topframe, text='Length:')
+    # entry_W = Entry(topframe, background="pink")
+    # entry_L = Entry(topframe, background="orange")
+
+    # layout the widgets in the top frame
+    # model_label.grid(row=0, columnspan=3)
+    # width_label.grid(row=1, column=0)
+    # length_label.grid(row=1, column=2)
+    # entry_W.grid(row=1, column=1)
+    # entry_L.grid(row=1, column=3)
+
+    # create the center widgets
+    center.grid_rowconfigure(0, weight=1)
+    center.grid_columnconfigure(1, weight=1)
+
+    controlleft = Frame(center, bg='blue', width=300)
+    controlmid = Frame(center, bg='yellow', width=250, padx=3, pady=3)
+    controlright = Frame(center, bg='green', width=300, padx=3, pady=3)
+
+    controlleft.grid(row=0, column=0, sticky="ns")
+    controlmid.grid(row=0, column=1, sticky="nsew")
+    controlright.grid(row=0, column=2, sticky="ns")
+
+    bottompanel = PanedWindow(rootframe, orient=VERTICAL)
+    panelframe = Frame(bottompanel, bg="#9dc8e3")
+    bottompanel.add(panelframe, minsize=150)
+    bottompanel.grid(row=3, column=0, sticky="nsew")
+    top = Label(panelframe, text="PANEL")
+    top.pack(fill=BOTH, expand=1)
+
+    # m1 = PanedWindow()
+    # m1.grid(fill=BOTH, expand=1)
+
+    # leftboredframe = Frame(rootframe, width=5, height=420)
+    # vertical_frame = Frame(rootframe, width=10, height=420)
+    # vertical_frame2 = Frame(rootframe, width=10, height=420)
+    # vertical_frame3 = Frame(rootframe, width=10, height=420)
+
+    # leftboredframe.grid(row=2, column=0)
+    # vertical_frame.grid(row=2, column=2)
+    # vertical_frame2.grid(row=2, column=4)
+    # vertical_frame3.grid(row=2, column=6)
+
+    # frame_left.grid(row=2, column=1, sticky="nsew")
+    # frame_mid.grid(row=2, column=3, sticky="nsew")
+    # frame_right.grid(row=2, column=5, sticky="nsew")
+
+    # horizontal_frame_2 = Frame(rootframe, width=800, height=5)
+    # horizontal_frame_2.grid(row=3, columnspan=3)
+
+    # frame_bottom.grid(row=4, columnspan=7, sticky="ew")
+    # panelbottom.grid(row=4, columnspan=7, sticky="ew")
+
+    # frametop.grid_propagate(0)
+
+    librarytreeviewscollbar = Scrollbar(controlleft)
+    librarytreeview = ttk.Treeview(controlleft)
+    librarytreeviewscollbar.config(command=librarytreeview.yview)
+    librarytreeviewscollbar.pack(side="right", fill="y")
+
+    librarytreeview.config(show="tree", yscrollcommand=librarytreeviewscollbar.set)
+    librarytreeview.pack(side="left", fill="y")
+
+    actionlistbox = Listbox(controlmid, width=230)
+    actionlistbox.pack(side="left", fill="y")
+
+    actionlistboxscollbar = Scrollbar(controlmid, orient="vertical")
+    actionlistboxscollbar.config(command=actionlistbox.yview)
+    actionlistboxscollbar.pack(side="right", fill="y")
+    actionlistbox.config(yscrollcommand=actionlistboxscollbar.set)
+
+    selectlabel = Label(controlright, width=30)
+    selectlabel.pack(fill="both")
 
     def __init__(self, **kwargs):
         # Set icon
         try:
-            self.__root.wm_iconbitmap("robot-ico.ico")
+            self.rootframe.wm_iconbitmap("robot-ico.ico")
         except:
             pass
-        # Set window size (the default is 300x300)
-        try:
-            self.__thisWidth = kwargs['width']
-        except KeyError:
-            pass
 
-        try:
-            self.__thisHeight = kwargs['height']
-        except KeyError:
-            pass
-
-        # Set the window text
-        self.__root.title("Untitled - pyRPA")
-
-        # Center the window
-        screenWidth = self.__root.winfo_screenwidth()
-        screenHeight = self.__root.winfo_screenheight()
-
-        # For left-alling
-        left = (screenWidth / 2) - (self.__thisWidth / 2)
-
-        # For right-allign
-        top = (screenHeight / 2) - (self.__thisHeight / 2)
-
-        # For top and bottom
-        self.__root.geometry('%dx%d+%d+%d' % (self.__thisWidth,
-                                              self.__thisHeight,
-                                              left, top))
-        # self.__thisRunButton.pack(side=LEFT)
-        # To make the textarea auto resizable
-        # self.__root.grid_rowconfigure(0, weight=1)
-        # self.__root.grid_columnconfigure(0, weight=1)
-
-        # Add controls (widget)
-        # self.__thisTextArea.grid(sticky = N + E + S + W)
+        # Window title
+        self.rootframe.title("NewFile - pyRPA")
+        self.menubar.add_cascade(label="File",
+                                 menu=self.filemenu)
 
         # To open new file
-        self.__thisFileMenu.add_command(label="New",
-                                        command=self.__newFile)
+        self.filemenu.add_command(label="New",
+                                  command=self.new_file_command)
 
         # To open a already existing file
-        self.__thisFileMenu.add_command(label="Open",
-                                        command=self.__openFile)
+        self.filemenu.add_command(label="Open",
+                                  command=self.open_file_command)
 
         # To save current file
-        self.__thisFileMenu.add_command(label="Save",
-                                        command=self.__saveFile)
+        self.filemenu.add_command(label="Save",
+                                  command=self.save_file_command)
 
-        # To create a line in the dialog
-        self.__thisFileMenu.add_separator()
-        self.__thisFileMenu.add_command(label="Exit",
-                                        command=self.__quitApplication)
+        # To save current file
+        self.filemenu.add_command(label="Save As",
+                                  command=self.save_file_as_command)
 
-        self.__thisMenuBar.add_cascade(label="File",
-                                       menu=self.__thisFileMenu)
+        # To create a line in the menu
+        self.filemenu.add_separator()
 
-        self.__thisViewMenu.add_command(label="Editor",
-                                        command=self.__openEditor)
-        # To give a feature of cut
-        self.__thisViewMenu.add_command(label="Cut",
-                                        command=self.__cut)
+        # To create a Script help
+        self.menubar.add_cascade(label="Script",
+                                 menu=self.runmenu)
+        # To run the scenario
+        self.runmenu.add_command(label="Run",
+                                 command=self.run_script)
+        # To Exit application
+        self.filemenu.add_command(label="Exit",
+                                  command=self.quit_application)
 
-        # to give a feature of copy
-        self.__thisViewMenu.add_command(label="Copy",
-                                        command=self.__copy)
+        # To create a menu help
+        self.menubar.add_cascade(label="Help",
+                                 menu=self.helpmenu)
 
-        # To give a feature of paste
-        self.__thisViewMenu.add_command(label="Paste",
-                                        command=self.__paste)
+        # To create a feature of description of the application
+        self.helpmenu.add_command(label="About",
+                                  command=self.show_about)
 
-        # To give a feature of editing
-        self.__thisMenuBar.add_cascade(label="View",
-                                       menu=self.__thisViewMenu)
+        self.rootframe.config(menu=self.menubar)
 
-        self.__thisMenuBar.add_cascade(label="Run",
-                                       menu=self.__thisRunMenu)
+        # self.actionlistbox.config(yscrollcommand=self.actionlistboxscollbar.set)
+        # self.actionlistbox.grid(row=0, column=3, columnspan=2, rowspan=6)
+        # self.actionlistbox.bind('<<ListboxSelect>>', self.onselect)
+        self.librarytreeview.bind('<<TreeviewSelect>>', self.onselect)
+        self.librarytreeview.bind("<ButtonPress-1>", self.bDown)
+        self.librarytreeview.bind("<ButtonRelease-1>", self.bUp)
+        self.librarytreeview.bind("<B1-Motion>", self.bMove)
 
-        self.__thisRunMenu.add_command(label="Excute",
-                                       command=self.__runScript)
+        # self.actionlistboxscollbar.config(command=self.__thisActionListBox.yview)
+        # self.actionlistboxscollbar.grid(row=0, column=6, columnspan=1, rowspan=6)
+        self.load_tree_view()
 
-        # To create a feature of description of the notepad
-        self.__thisHelpMenu.add_command(label="About pyRPA",
-                                        command=self.__showAbout)
-        self.__thisMenuBar.add_cascade(label="Help",
-                                       menu=self.__thisHelpMenu)
-
-        self.__root.config(menu=self.__thisMenuBar)
-
-        # self.__thisScrollBar.pack(side=RIGHT,fill=Y)
-
-        # Scrollbar will adjust automatically according to the content
-        # self.__thisRunButton.config(text='Run', width=7, height=3, command=self.__runScript)
-        # self.__thisRunButton.grid(row=0, column=0)
-        self.__thisAddButton.config(text='Add', command=self.__addNode)
-        self.__thisAddButton.grid(row=0, column=0, rowspan=1, columnspan=1)
-
-        self.__thisDeleteButton.config(text='Delete', command=self.__deleteNode)
-        self.__thisDeleteButton.grid(row=0, column=3, rowspan=1, columnspan=1)
-
-        self.__thisActionListBox.config(yscrollcommand=self.__thisActionListBoxScrollBar.set)
-        self.__thisActionListBox.grid(row=0, column=3, columnspan=2, rowspan=6)
-        self.__thisActionListBox.bind('<<ListboxSelect>>', self.onselect)
-        self.__thisActionListBoxScrollBar.config(command=self.__thisActionListBox.yview)
-        self.__thisActionListBoxScrollBar.grid(row=0, column=6, columnspan=1, rowspan=6)
-        self.__thisSelectLabel.grid(row=0, column=7)
-        self.__thisLibraryTreeView.config(show="tree", yscrollcommand=self.__thisLibraryTreeViewScrollBar.set)
-        self.__thisLibraryTreeView.grid(row=1, column=0, columnspan=2, rowspan=4)
-        self.__thisLibraryTreeViewScrollBar.config(command=self.__thisLibraryTreeView.yview)
-        self.__thisLibraryTreeViewScrollBar.grid(row=1, column=2, columnspan=1, rowspan=4)
-
-        #self.__thisConfigNodeFrame()
-        self.__loadTreeView()
-
-        # self.__thisTextArea.config(yscrollcommand=self.__thisScrollBar.set)
-    def onselect(self,evt):
-        selector = evt.widget
-        index = int(selector.curselection()[0])
-        index_value = selector.get(index)
-        self.__thisSelectLabel.config(text=index_value)
-
-    def __quitApplication(self):
-        self.__root.destroy()
-        # exit()
-
-    def __loadTreeView(self):
-        list_node = (
-            "group", "node-base", "assign", "if-else", "multi-if", "for-loop", "while-loop", "do-while-loop", "break",
-            "continue", "try-catch", "subscript-call", "subscript-create", "return")
-        f1 = self.__thisLibraryTreeView.insert("", 0, iid="Main Node", text="Node")
-        for i in list_node:
-            self.__thisLibraryTreeView.insert(f1, "end", text=i)
-        f2 = self.__thisLibraryTreeView.insert("", "end", iid="Library Node", text="Library")
-        self.__thisLibraryTreeView.insert(f2, "end", text="test_func1")
-        self.__thisLibraryTreeView.insert(f2, "end", text="test_func2")
-        self.__thisLibraryTreeView.insert(f2, "end", text="open_chrome")
-        self.__thisLibraryTreeView.insert(f2, "end", text="open_gmail")
-
-    def __addNode(self):
-        self.__thisActionListBox.insert(END,
-                                        self.__thisLibraryTreeView.item(self.__thisLibraryTreeView.focus())['text'])
-        self.__addActionToScript(self.__thisLibraryTreeView.item(self.__thisLibraryTreeView.focus())['text'])
-        # self.__thisScript.__additem__()
+    def onselect(self, event):
+        self.selected = event.widget.selection()
+        print(self.selected)
+        # print(self.librarytreeview.item(idx)['text'])
         return
 
-    def __addActionToScript(self, type):
-        if type == "assign":
-            self.__thisVariableList.__adduniqueitem__(variable.Variable("driver", "", ""))
-            self.__thisVariableList.__adduniqueitem__(variable.Variable("url", "", "http://gmail.com"))
-            # self.__thisScript.__additem__(assnode.AssignNode("", ""))
-        elif type == "if-else":
-            self.__thisScript.__additem__(ifnode.IfNode("", "", ""))
-        elif type == "node-base":
-            self.__thisScript.__additem__(nodebase.NodeBase("", "test_func1"))
-        elif type == "test_func1":
-            self.__thisScript.__additem__(nodebase.NodeBase("node-base1", "test_func1"))
-        elif type == "test_func2":
-            self.__thisScript.__additem__(nodebase.NodeBase("node-base2", "test_func2"))
-        elif type == "open_chrome":
-            self.__thisScript.__additem__(nodebase.NodeBase("node-base1", "open_chrome"))
-        elif type == "open_gmail":
-            self.__thisScript.__additem__(nodebase.NodeBase("node-base2", "open_gmail"))
-
-    def __deleteNode(self):
-        self.__thisActionListBox.delete(ANCHOR)
+    def bDown(self, event):
+        tv = event.widget
+        if tv.identify_row(event.y) not in tv.selection():
+            tv.selection_set(tv.identify_row(event.y))
+            print(tv.selection_set(tv.identify_row(event.y)))
+        # self.selectlabel.config(text=index_value)
         return
 
-    def __showAbout(self):
-        showinfo("pyRPA", "wingchaos2012@gmail.com")
+    def bUp(self, event):
+        tv = event.widget
+        if tv.identify_row(event.y) in tv.selection():
+            tv.selection_set(tv.identify_row(event.y))
+        return
 
-    def __openFile(self):
-        self.__file = askopenfilename(defaultextension=".txt",
-                                      filetypes=[("All Files", "*.*"),
-                                                 ("Text Documents", "*.txt")])
-
-        if self.__file == "":
-
-            # no file to open
-            self.__file = None
-        else:
-
-            # Try to open the file
-            # set the window title
-            self.__root.title(os.path.basename(self.__file) + " - Notepad")
-            # self.__thisTextArea.delete(1.0,END)
-
-            file = open(self.__file, "r")
-
-            # self.__thisTextArea.insert(1.0,file.read())
-
-            file.close()
-
-    def __newFile(self):
-        self.__root.title("new file - pyRPA")
-        self.__file = None
-        self.__thisActionListBox.delete(0,END)
-        self.__thisScript.__del__()
-
-        del self.__thisVariableList
-        print(self.__thisVariableList.__getleng__())
-        self.__thisScript = script.Script()
-        self.__thisVariableList = variablelist.VariableList()
-        self.__thisLibraryTreeView.item("Main Node", open=False)
-        self.__thisLibraryTreeView.item("Library Node", open=False)
-        # self.__thisTextArea.delete(1.0,END)
-
-    def __saveFile(self):
-
-        if self.__file == None:
-            # Save as new file
-            self.__file = asksaveasfilename(initialfile='Untitled.txt',
-                                            defaultextension=".txt",
-                                            filetypes=[("All Files", "*.*"),
-                                                       ("Text Documents", "*.txt")])
-
-            if self.__file == "":
-                self.__file = None
-            else:
-
-                # Try to save the file
-                file = open(self.__file, "w")
-                # file.write(self.__thisTextArea.get(1.0,END))
-                file.close()
-
-                # Change the window title
-                self.__root.title(os.path.basename(self.__file) + " - Notepad")
-
-
-        else:
-            file = open(self.__file, "w")
-            file.write(self.__thisTextArea.get(1.0, END))
-            file.close()
-
-    def __cut(self):
-        # self.__thisTextArea.event_generate("<<Cut>>")
-        pass
-
-    def __copy(self):
-        # self.__thisTextArea.event_generate("<<Copy>>")
-        pass
-
-    def __paste(self):
-        # self.__thisTextArea.event_generate("<<Paste>>")
-        pass
-
-    def __runScript(self):
-        self.__thisScript.__run__()
-        pass
-
-    def __openEditor(self):
-        pass
+    def bMove(self, event):
+        tv = event.widget
+        moveto = tv.index(tv.identify_row(event.y))
+        for s in tv.selection():
+            tv.move(s, '', moveto)
 
     def run(self):
         # Run main application
-        self.__root.mainloop()
+        self.rootframe.mainloop()
+
+    def new_file_command(self):
+        pass
+
+    def open_file_command(self):
+        pass
+
+    def save_file_command(self):
+        pass
+
+    def save_file_as_command(self):
+        pass
+
+    def run_script(self):
+        pass
+
+    def quit_application(self):
+        pass
+
+    def show_about(self):
+        pass
+
+    def load_tree_view(self):
+        # create node folder
+        # list_node = (
+        #     "group", "node-base", "assign", "if-else", "multi-if", "for-loop", "while-loop", "do-while-loop", "break",
+        #     "continue", "try-catch", "subscript-call", "subscript-create", "return","message-box")
+        nodeList = (
+            "group", "node-base", "assign", "if-else", "message-box")
+        f1 = self.librarytreeview.insert("", 0, iid="Main Node", text="Node")
+        for i in nodeList:
+            self.librarytreeview.insert(f1, "end", text=i)
+
+        # create library folder
+        f2 = self.librarytreeview.insert("", "end", iid="Library Node", text="Library")
+        self.librarytreeview.insert(f2, "end", text="test_func1")
+        self.librarytreeview.insert(f2, "end", text="test_func2")
+        self.librarytreeview.insert(f2, "end", text="open_chrome")
+        self.librarytreeview.insert(f2, "end", text="open_gmail")
+        return
