@@ -4,5 +4,4 @@ import Variable as variable
 variable_list = variablelist.VariableList()
 
 driver = variable_list.get_cur_value("driver")
-print(variable_list.get_init_value("url"))
 driver.get(variable_list.get_init_value("url"))

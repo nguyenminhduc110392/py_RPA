@@ -1,10 +1,13 @@
 import NodeBase as nb
 import NodeGroup as ng
+import json
 
 class Script(object):
-    type = "script"
-    node_list = []
+    # type = "script"
+    # node_list = []
     def __init__(self):
+        self.node_list = []
+        self.type = "script"
         pass
 
     def __getnodelist__(self):
@@ -26,4 +29,9 @@ class Script(object):
         for i in range(self.node_list.__len__()):
             self.node_list.__getitem__(i).run_node()
         return
+
+    def toJSON(self):
+        print(self.__dict__)
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
 

@@ -7,7 +7,6 @@ class NodeBase(object):
         self.name = node_name
         self.function = function_name
 
-
     def __getname__(self):
         return self.name
 
@@ -31,3 +30,6 @@ class NodeBase(object):
 
     def run_node(self):
         run_function(self.function)
+
+    def load_properties_list(self):
+        return {'Name': self.name,'Function': self.function}

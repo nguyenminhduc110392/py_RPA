@@ -4,6 +4,7 @@ class NodeGroup(object):
         self.name = node_name
         self.node_list = []
         self.type = node_type
+        self.accessible = True
 
     def __getnodelist__(self):
         return self.node_list
@@ -31,5 +32,6 @@ class NodeGroup(object):
             self.node_list.__getitem__(i).run_node()
         return
 
-
+    def load_properties_list(self):
+        return {'Name': self.name}
 

@@ -1,8 +1,21 @@
+import json
 import tkinter
 from tkinter import *
 from tkinter import ttk
 from tkinter.filedialog import *
 from tkinter.messagebox import *
+
+import VariableList as variablelist
+import Variable as variable
+
+import Script as script
+import NodeBase as nodebase
+import NodeGroup as nodegroup
+import IfNode as ifnode
+import ForNode as fornode
+import AssignNode as assnode
+import BreakNode as breaknode
+import Expresstion as exp
 
 
 class MainWindow(object):
@@ -30,22 +43,6 @@ class MainWindow(object):
 
     topframe.grid(row=0, sticky="ew")
     center.grid(row=1, sticky="nsew")
-    # btmframe.grid(row=3, sticky="ew")
-    # btmframe2.grid(row=4, sticky="ew")
-
-    # create the widgets for the top frame
-    # model_label = Label(topframe, text='Model Dimensions')
-    # width_label = Label(topframe, text='Width:')
-    # length_label = Label(topframe, text='Length:')
-    # entry_W = Entry(topframe, background="pink")
-    # entry_L = Entry(topframe, background="orange")
-
-    # layout the widgets in the top frame
-    # model_label.grid(row=0, columnspan=3)
-    # width_label.grid(row=1, column=0)
-    # length_label.grid(row=1, column=2)
-    # entry_W.grid(row=1, column=1)
-    # entry_L.grid(row=1, column=3)
 
     # create the center widgets
     center.grid_rowconfigure(0, weight=1)
@@ -66,31 +63,6 @@ class MainWindow(object):
     top = Label(panelframe, text="PANEL")
     top.pack(fill=BOTH, expand=1)
 
-    # m1 = PanedWindow()
-    # m1.grid(fill=BOTH, expand=1)
-
-    # leftboredframe = Frame(rootframe, width=5, height=420)
-    # vertical_frame = Frame(rootframe, width=10, height=420)
-    # vertical_frame2 = Frame(rootframe, width=10, height=420)
-    # vertical_frame3 = Frame(rootframe, width=10, height=420)
-
-    # leftboredframe.grid(row=2, column=0)
-    # vertical_frame.grid(row=2, column=2)
-    # vertical_frame2.grid(row=2, column=4)
-    # vertical_frame3.grid(row=2, column=6)
-
-    # frame_left.grid(row=2, column=1, sticky="nsew")
-    # frame_mid.grid(row=2, column=3, sticky="nsew")
-    # frame_right.grid(row=2, column=5, sticky="nsew")
-
-    # horizontal_frame_2 = Frame(rootframe, width=800, height=5)
-    # horizontal_frame_2.grid(row=3, columnspan=3)
-
-    # frame_bottom.grid(row=4, columnspan=7, sticky="ew")
-    # panelbottom.grid(row=4, columnspan=7, sticky="ew")
-
-    # frametop.grid_propagate(0)
-
     librarytreeviewscollbar = Scrollbar(controlleft)
     librarytreeview = ttk.Treeview(controlleft)
     librarytreeviewscollbar.config(command=librarytreeview.yview)
@@ -110,6 +82,10 @@ class MainWindow(object):
     selectlabel = Label(controlright, width=30)
     selectlabel.pack(fill="both")
 
+    mainscript = script.Script()
+    variablelist = variablelist.VariableList()
+
+    file = None
     def __init__(self, **kwargs):
         # Set icon
         try:
@@ -164,19 +140,70 @@ class MainWindow(object):
         # self.actionlistbox.config(yscrollcommand=self.actionlistboxscollbar.set)
         # self.actionlistbox.grid(row=0, column=3, columnspan=2, rowspan=6)
         # self.actionlistbox.bind('<<ListboxSelect>>', self.onselect)
-        self.librarytreeview.bind('<<TreeviewSelect>>', self.onselect)
-        self.librarytreeview.bind("<ButtonPress-1>", self.bDown)
-        self.librarytreeview.bind("<ButtonRelease-1>", self.bUp)
-        self.librarytreeview.bind("<B1-Motion>", self.bMove)
+
+        self.librarytreeview.bind("<Double-1>", self.event_on_add)
+        self.actionlistbox.bind("<ButtonRelease-1>", self.event_on_select)
+        self.actionlistbox.bind("<Double-1>", self.event_on_access)
+        # self.librarytreeview.bind("<ButtonPress-1>", self.bDown)
+        # self.librarytreeview.bind("<ButtonRelease-1>", self.bUp)
+        # self.librarytreeview.bind("<B1-Motion>", self.bMove)
 
         # self.actionlistboxscollbar.config(command=self.__thisActionListBox.yview)
         # self.actionlistboxscollbar.grid(row=0, column=6, columnspan=1, rowspan=6)
         self.load_tree_view()
 
-    def onselect(self, event):
-        self.selected = event.widget.selection()
-        print(self.selected)
-        # print(self.librarytreeview.item(idx)['text'])
+    def event_on_access(self, event):
+        selector = event.widget
+        index = int(selector.curselection()[0])
+        index_value = selector.get(index)
+        if hasattr(self.mainscript.node_list[index], 'accessible'):
+            if self.mainscript.node_list[index].accessible==True:
+                self.access_node(self.mainscript.node_list[index])
+        return
+
+    def access_node(self,element):
+        print("accessed")
+        pass
+
+    def event_on_select(self, event):
+        selector = event.widget
+        index = int(selector.curselection()[0])
+        index_value = selector.get(index)
+        self.selectlabel.config(text=index_value + " setting")
+        self.load_properties(self.mainscript.node_list[index])
+        return
+
+    def load_properties(self,element):
+        properties_dic = element.load_properties_list()
+
+    def event_on_add(self, event):
+        selected = self.librarytreeview.focus()
+        if self.librarytreeview.item(selected)['tags'] != ['Fd']:
+            self.actionlistbox.insert(END, self.librarytreeview.item(self.librarytreeview.focus())['text'])
+            self.add_action_to_script(self.librarytreeview.item(self.librarytreeview.focus())['text'])
+        return
+
+    def add_action_to_script(self, type):
+        if type == "assign":
+            self.variablelist.__adduniqueitem__(variable.Variable("driver", ""))
+            self.variablelist.__adduniqueitem__(variable.Variable("url", "http://gmail.com"))
+            #self.mainscript.__additem__(assnode.AssignNode("abc", "123"))
+        elif type == "if-else":
+            self.mainscript.__additem__(ifnode.IfNode("", "", ""))
+        elif type == "node-base":
+            self.mainscript.__additem__(nodebase.NodeBase("", "test_func1"))
+        elif type == "test_func1":
+            self.mainscript.__additem__(nodebase.NodeBase("node-base1", "test_func1"))
+        elif type == "test_func2":
+            self.mainscript.__additem__(nodebase.NodeBase("node-base2", "test_func2"))
+        elif type == "open_chrome":
+            self.mainscript.__additem__(nodebase.NodeBase("node-base1", "open_chrome"))
+        elif type == "open_gmail":
+            self.mainscript.__additem__(nodebase.NodeBase("node-base2", "open_gmail"))
+        elif type == "message-box":
+            self.mainscript.__additem__(nodebase.NodeBase("node-base2", "message_box"))
+        elif type == "group":
+            self.mainscript.__additem__(nodegroup.NodeGroup("node-group1", "group1"))
         return
 
     def bDown(self, event):
@@ -184,7 +211,6 @@ class MainWindow(object):
         if tv.identify_row(event.y) not in tv.selection():
             tv.selection_set(tv.identify_row(event.y))
             print(tv.selection_set(tv.identify_row(event.y)))
-        # self.selectlabel.config(text=index_value)
         return
 
     def bUp(self, event):
@@ -207,15 +233,57 @@ class MainWindow(object):
         pass
 
     def open_file_command(self):
-        pass
+        self.file = askopenfilename(defaultextension=".txt",
+                                      filetypes=[("All Files", "*.*"),
+                                                 ("Text Documents", "*.txt")])
+
+        if self.file == "":
+
+            # no file to open
+            self.file = None
+        else:
+
+            # Try to open the file
+            # set the window title
+            self.rootframe.title(os.path.basename(self.file) + " - Notepad")
+            # self.__thisTextArea.delete(1.0,END)
+
+            file = open(self.file, "r")
+            self.mainscript = json.loads(file.read())
+            file.close()
 
     def save_file_command(self):
-        pass
+        if self.file == None:
+            # Save as new file
+            self.file = asksaveasfilename(initialfile='Untitled.txt',
+                                            defaultextension=".txt",
+                                            filetypes=[("All Files", "*.*"),
+                                                       ("Text Documents", "*.txt")])
+
+            if self.file == "":
+                self.file = None
+            else:
+
+                # Try to save the file
+                file = open(self.file, "w")
+                file.write(self.mainscript.toJSON())
+                #json.dump(self.mainscript.toJSON(), file)
+                file.close()
+
+                # Change the window title
+                self.rootframe.title(os.path.basename(self.file))
+        else:
+            file = open(self.file, "w")
+            file.write(self.mainscript.toJSON())
+            #print(self.mainscript.toJSON())
+            #json.dump(self.mainscript.toJSON(), file)
+            file.close()
 
     def save_file_as_command(self):
         pass
 
     def run_script(self):
+        self.mainscript.__run__()
         pass
 
     def quit_application(self):
@@ -231,12 +299,12 @@ class MainWindow(object):
         #     "continue", "try-catch", "subscript-call", "subscript-create", "return","message-box")
         nodeList = (
             "group", "node-base", "assign", "if-else", "message-box")
-        f1 = self.librarytreeview.insert("", 0, iid="Main Node", text="Node")
+        f1 = self.librarytreeview.insert("", 0, iid="Main Node", text="Node", tags="Fd")
         for i in nodeList:
             self.librarytreeview.insert(f1, "end", text=i)
 
         # create library folder
-        f2 = self.librarytreeview.insert("", "end", iid="Library Node", text="Library")
+        f2 = self.librarytreeview.insert("", "end", iid="Library Node", text="Library", tags="Fd")
         self.librarytreeview.insert(f2, "end", text="test_func1")
         self.librarytreeview.insert(f2, "end", text="test_func2")
         self.librarytreeview.insert(f2, "end", text="open_chrome")

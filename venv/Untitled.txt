@@ -1,0 +1,13 @@
+{
+    "node_list": [
+        {
+            "function": "open_chrome",
+            "name": "node-base1"
+        },
+        {
+            "function": "open_gmail",
+            "name": "node-base2"
+        }
+    ],
+    "type": "script"
+}
